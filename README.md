@@ -6,8 +6,17 @@ Academic Writing Citation Support 是一个面向 Codex 的学术写作引用支
 
 ![学术写作引用支持总览](assets/academic-citation-hero.png)
 
+## 视频介绍
+
+<video src="assets/academic-writing-citation-support-intro.mp4" controls width="100%">
+  您的浏览器不支持直接播放该视频。
+</video>
+
+[查看或下载视频介绍](assets/academic-writing-citation-support-intro.mp4)
+
 ## 目录
 
+- [视频介绍](#视频介绍)
 - [这个 Skill 解决什么问题](#这个-skill-解决什么问题)
 - [核心能力](#核心能力)
 - [详细工作流程](#详细工作流程)
@@ -317,6 +326,7 @@ academic-writing-citation-support/
 ├── .gitignore
 ├── assets/
 │   ├── academic-citation-hero.png
+│   ├── academic-writing-citation-support-intro.mp4
 │   ├── citation-workflow.png
 │   └── source-routing-verification.png
 └── literature-citation-aggregator/
@@ -348,7 +358,7 @@ academic-writing-citation-support/
 
 ## 配图说明
 
-README 中的三张配图使用 image-2 生成，仅用于说明工作流程和检索逻辑，不包含任何个人论文内容或特定研究主题。
+README 中的三张配图使用 image-2 生成，仅用于说明工作流程和检索逻辑，不包含任何个人论文内容或特定研究主题。视频介绍文件位于 `assets/academic-writing-citation-support-intro.mp4`，用于快速展示 Skill 的用途和工作流程。
 
 ## License
 
