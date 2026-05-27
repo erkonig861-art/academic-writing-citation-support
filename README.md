@@ -1,5 +1,7 @@
 # Academic Writing Citation Support｜学术写作引用支持 Skill
 
+说明：这个 skill 默认针对 Codex 设计，目录结构、安装路径和工具调用规则都以 Codex skills 为基准。若要用于 Claude、Cursor、Gemini 或其他 AI agent，可以根据对应平台的 skill、project instruction、agent rule 或 prompt 规范，自行调整文件位置、触发描述、工具权限和工作流程表述。
+
 Academic Writing Citation Support 是一个面向 Codex 的学术写作引用支持技能。它用于帮助 AI 写作助手从论文原文出发，识别缺少文献支撑的论断，检索相关学术文献，验证来源信息，谨慎插入 APA 文内引用，并生成可追溯的 APA 参考文献列表。
 
 它的重点不是“给论文堆引用”，而是把每一个重要论断连接到真正能够支撑该论断的学术来源。
