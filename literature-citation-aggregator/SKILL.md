@@ -1,0 +1,100 @@
+---
+name: literature-citation-aggregator
+description: Use when the user provides an academic manuscript, article draft, DOCX/PDF/text, paragraph, or research topic and asks Codex to strengthen paper writing with relevant scholarly literature, in-text citations, verified sources, and APA references.
+---
+
+# Academic Writing Citation Support
+
+## Overview
+
+Use this skill to strengthen academic writing by connecting manuscript claims to verified scholarly evidence. It extracts cite-worthy claims, searches across suitable scholarly tools, verifies metadata, inserts APA in-text citations conservatively, audits claim-source alignment, and produces a final APA reference list plus source trace.
+
+Default citation style is APA 7 unless the user specifies another style.
+
+## Core Rules
+
+- Preserve the author's argument, paragraph order, terminology, and voice. Do not rewrite beyond what is required to place citations smoothly.
+- Search from the user's original text, not from generic topic labels. Derive queries from the actual constructs, intervention, population, methods, outcomes, and theoretical claims in each paragraph.
+- Transmit only minimal search queries or short excerpts to third-party AI/search sites. Do not upload a full private file or long sensitive passages unless the user explicitly approves that destination and content.
+- Prefer peer-reviewed journal articles, systematic reviews, meta-analyses, seminal theory papers/books, and validated instruments. Avoid weak keyword matches, unverifiable papers, predatory-looking venues, or citations that only share broad terms.
+- Never invent references. If no reliable source is found, mark the claim as `needs source` and explain the gap.
+- Verify every included reference with DOI metadata, publisher page, Crossref, Semantic Scholar, Google Scholar, CNKI, or another authoritative index before finalizing.
+- Treat citation insertion as an integrity task, not a decoration task: a citation must support the exact sentence where it is inserted.
+- Keep a reproducible search trail for important claims: platform, query, filters, candidate count if visible, final selection rationale, and verification source.
+
+## Workflow
+
+1. Read and map the source text.
+   - For DOCX, use the Documents skill or reliable text extraction. Keep the original file unchanged until insertion strategy is clear.
+   - Build a citation map with: paragraph/claim, needed evidence type, search concepts, candidate sources, chosen citation, and verification link.
+   - Read `references/citation-map-template.md` before large document work or when the user wants citations inserted into a manuscript.
+
+2. Identify citation targets.
+   - Prioritize claims about definitions, theory, mechanisms, intervention design, research design, instruments/rubrics, outcome constructs, prior findings, and contextual claims.
+   - Do not cite every sentence. Add citations where they strengthen a specific claim or protect the manuscript from unsupported assertions.
+
+3. Search with a source-routing strategy.
+   - Read `references/source-routing.md` when selecting tools or when a task mentions Consensus, Elicit, Semantic Scholar, Scite, Crossref, Google Scholar, CNKI, Wanfang, or similar sites.
+   - Use multiple platforms for important claims: one discovery tool plus one verification/index source.
+   - Select platforms according to the claim type, discipline, and language of the manuscript. Start with a discovery tool, then verify with Crossref, publisher pages, or other authoritative indexes.
+   - For discipline-specific claims, include field databases where available; do not rely only on general AI search.
+
+4. Select sources by relevance and strength.
+   - Match the source to the exact claim: same construct, population or education level where possible, comparable method, and compatible outcome.
+   - Use recent reviews for broad field claims; use original empirical studies for intervention effects; use foundational theory for conceptual frameworks; use validation studies for rubrics and instruments.
+   - Prefer sources whose abstracts/methods show direct relevance, not just titles.
+   - Assign each selected source an evidence role: theory, review, empirical intervention, instrument/validation, context, or counterpoint.
+
+5. Run the pre-insertion integrity gate.
+   - Read `references/integrity-gates.md`.
+   - Verify reference existence and metadata for every selected source.
+   - Check claim-source fit before inserting: the source must support the sentence's construct, population/context, method, and level of certainty.
+   - Reject sources that require overclaiming, such as using a broad review to support a narrow effect claim that the review does not directly address.
+
+6. Insert in-text citations.
+   - Place citations at the end of the supported clause or sentence, before the period in APA style.
+   - Use narrative citations when the author is part of the sentence; use parenthetical citations for supporting evidence.
+   - Avoid citation piles. Use one or two best sources for ordinary claims; use three only when showing convergence across research types.
+   - Preserve transitions. If insertion makes a sentence heavy, split the sentence minimally.
+   - For uncertain fit, insert a comment or note rather than forcing a weak citation.
+
+7. Run the post-insertion audit.
+   - Confirm zero citation orphans: every in-text citation has a reference entry, and every reference entry is cited.
+   - Run a claim-source alignment check for high-value claims and any newly inserted citation.
+   - Use a reviewer-style sanity pass:
+     - methodology lens: does the source's design support the strength of the claim?
+     - domain lens: are key field sources missing?
+     - devil's advocate lens: could the citation be interpreted as weaker, contradictory, or only adjacent?
+   - For long manuscripts, sample at least 30% of citation contexts during draft work and 100% before final delivery.
+
+8. Produce APA references and traceability.
+   - Read `references/apa-checklist.md` before final formatting.
+   - Include DOI as `https://doi.org/...` when available.
+   - Provide a source trace table or short note showing which platform found the source and which source verified it.
+   - Separate final references from optional/background sources that were searched but not cited.
+
+## Deliverables
+
+When editing a document, return:
+- A revised DOCX or marked-up text with citations inserted.
+- An APA reference list containing only cited works unless the user asks for a bibliography.
+- A citation map or concise source trace: claim/location, citation, discovery source, verification source, and claim-fit note.
+- A citation audit summary: orphan count, metadata verification status, claim-source alignment issues, unresolved gaps.
+- A short list of unresolved citation gaps, if any.
+
+When only researching, return:
+- Recommended APA references grouped by purpose.
+- One-sentence relevance notes tied to the user's text.
+- Verification links or DOI links.
+
+## Useful Script
+
+Use `scripts/crossref_lookup.py` to verify DOI/title metadata and generate APA-like reference drafts from Crossref. Treat its output as a draft; still check capitalization, names, and source fit before inserting into a final manuscript.
+
+Use `scripts/apa_intext_ref_check.py` on plain-text or Markdown drafts to detect likely APA in-text/reference mismatches. Treat its output as a heuristic report; manually review complex citations, edited books, translated works, organization authors, and non-APA styles.
+
+## Integration With Academic Skills
+
+- With `academic-paper`: this skill can supply the literature matrix, recommended sources by section, citation insertion log, and APA-compliant reference list for citation-check or revision work.
+- With `academic-pipeline`: this skill should behave like a lightweight integrity sub-stage for citation insertion. It must not skip reference existence, citation-context, or claim-source checks.
+- With `academic-paper-reviewer`: use reviewer-style lenses to challenge weak citation fit before delivery, especially for methodology, evidence sufficiency, literature integration, and overclaiming.

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Academic Writing Citation Support"
+  short_description: "Strengthen academic manuscripts with verified scholarly citations."
+  default_prompt: "Use this skill to identify unsupported claims in my academic manuscript, find relevant scholarly sources, insert APA citations without disrupting the argument, and produce an APA reference list with source traces."
