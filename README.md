@@ -1,194 +1,297 @@
-# Academic Writing Citation Support
+# Academic Writing Citation Support｜学术写作引用支持 Skill
 
-Academic Writing Citation Support is a Codex skill for strengthening academic manuscripts with verified scholarly citations and APA-style references.
+Academic Writing Citation Support 是一个面向 Codex 的学术写作引用支持技能。它用于帮助 AI 写作助手从论文原文出发，识别缺少文献支撑的论断，检索相关学术文献，验证来源信息，谨慎插入 APA 文内引用，并生成可追溯的 APA 参考文献列表。
 
-It helps an AI writing assistant read an academic draft, identify unsupported claims, search for relevant scholarly literature, verify source metadata, insert in-text citations conservatively, and produce a traceable APA reference list. The goal is not to decorate a paper with citations, but to connect each important claim to sources that actually support it.
+它的重点不是“给论文堆引用”，而是把每一个重要论断连接到真正能够支撑该论断的学术来源。
 
-## Why This Skill Exists
+![学术写作引用支持总览](assets/academic-citation-hero.png)
 
-Academic writing often fails at the citation stage for three reasons:
+## 目录
 
-- Sources are found by broad keywords instead of the exact claim in the manuscript.
-- References are inserted because they look related, even when they do not directly support the sentence.
-- The final reference list is not checked against in-text citations, source metadata, DOI links, and claim-source fit.
+- [这个 Skill 解决什么问题](#这个-skill-解决什么问题)
+- [核心能力](#核心能力)
+- [详细工作流程](#详细工作流程)
+- [多平台分工检索策略](#多平台分工检索策略)
+- [核心优势](#核心优势)
+- [输出结果](#输出结果)
+- [适用场景](#适用场景)
+- [安装方法](#安装方法)
+- [使用方法](#使用方法)
+- [仓库结构](#仓库结构)
+- [引用完整性原则](#引用完整性原则)
+- [隐私与限制](#隐私与限制)
 
-This skill is designed to make citation work more rigorous. It treats citation insertion as an evidence alignment task: every cited source should have a clear role, every inserted citation should support the nearby claim, and every final reference should be verifiable.
+## 这个 Skill 解决什么问题
 
-## What It Does
+学术写作中的文献引用常见问题包括：
 
-- Finds claims in academic writing that need scholarly support.
-- Builds search queries from the manuscript's actual concepts, methods, population, outcomes, and theory.
-- Routes literature searches across suitable platforms such as Consensus, Elicit, Semantic Scholar, Crossref, Google Scholar, CNKI, Wanfang, Scite, PubMed, ERIC, IEEE Xplore, ACM Digital Library, PsycINFO, JSTOR, and other field databases.
-- Verifies sources before citation insertion.
-- Inserts APA in-text citations without disrupting the author's argument.
-- Produces an APA reference list and a source trace.
-- Flags weak, unverifiable, or mismatched sources instead of inventing citations.
+- 只用宽泛关键词找文献，找到的文章和原文论断并不完全匹配。
+- 文献看起来相关，但实际不能支撑被引用的句子。
+- 文内引用和参考文献列表没有相互核对。
+- DOI、作者、年份、期刊、页码等元数据没有验证。
+- 为了让段落“看起来更学术”，强行插入弱相关引用。
+- 引用来源过于单一，只依赖一个 AI 搜索工具或一个数据库。
 
-## Detailed Workflow
+这个 Skill 的目标是把引用工作变成一个可审计的证据匹配过程：每个引用都应该有明确作用，每个来源都应该能验证，每个文内引用都应该和参考文献列表一致。
 
-### 1. Read the Manuscript
+## 核心能力
 
-The skill starts from the user's original text. It does not rely only on a broad topic label such as "education technology" or "student motivation." Instead, it reads the paragraph-level argument and identifies the actual constructs, methods, populations, contexts, outcomes, and theoretical claims that need support.
+- 从原文中识别需要文献支撑的论断。
+- 基于原文的概念、方法、研究对象、情境、结果和理论来构造检索词。
+- 根据任务类型选择合适平台，例如 Consensus、Elicit、Semantic Scholar、Crossref、Google Scholar、Scite、CNKI、Wanfang、PubMed、ERIC、IEEE Xplore、ACM Digital Library、PsycINFO、JSTOR 等。
+- 在插入引用前验证文献来源和元数据。
+- 使用 APA 7 风格插入文内引用。
+- 生成 APA 参考文献列表。
+- 输出“论断-来源”对应关系，方便复查。
+- 对弱相关、无法验证或不匹配的来源进行标记，而不是编造引用。
 
-For DOCX, PDF, or long text files, the original writing should be preserved. The first pass is used to understand the manuscript, not to rewrite it.
+## 详细工作流程
 
-### 2. Identify Citation Targets
+![学术引用工作流程](assets/citation-workflow.png)
 
-The skill looks for claims that normally require evidence, including:
+### 1. 阅读原文
 
-- definitions and conceptual claims
-- theory and mechanism claims
-- intervention or treatment claims
-- research design and method claims
-- instrument, rubric, or validity claims
-- prior findings and literature review claims
-- contextual, policy, historical, or factual claims
-- statistical or comparative claims
+Skill 首先读取用户提供的论文草稿、章节、段落、DOCX、PDF 或纯文本。它不会只根据一个宽泛主题来搜索文献，而是从原文句子和段落中提取真实的学术论断。
 
-It does not try to cite every sentence. The focus is on claims where a citation would materially improve academic credibility.
+这一阶段关注：
 
-### 3. Build a Citation Map
+- 段落的核心论点
+- 关键概念和变量
+- 理论框架
+- 研究对象或样本
+- 方法、干预或工具
+- 结果、影响或评价指标
+- 需要背景支撑的语境性信息
 
-Before inserting citations, the skill builds a citation map. This map links each claim to:
+### 2. 识别需要引用的论断
 
-- the manuscript location
-- the original sentence or shortened claim
-- the evidence type needed
-- the search concepts
-- candidate sources
-- final selected source
-- source verification link
-- claim-fit note
+不是每句话都需要引用。Skill 会优先识别真正需要文献支撑的位置，例如：
 
-This makes the process reproducible. A reader can see why a source was chosen and which claim it supports.
+- 定义性论断
+- 理论或机制性论断
+- 方法设计论断
+- 干预效果论断
+- 工具、量表、评分标准或效度论断
+- 既有研究发现
+- 背景、政策、历史或事实性论断
+- 统计性或比较性论断
 
-### 4. Route the Search Across Platforms
+如果某个句子只是承接上下文或表达作者自己的分析，通常不需要强行加引用。
 
-Different claims need different search tools. The skill uses a source-routing strategy rather than searching every platform in the same way.
+### 3. 建立引用地图
 
-| Need | Recommended platforms | Purpose |
+在插入引用前，Skill 会建立一个 citation map，即引用地图。它把每个需要支撑的论断和候选文献连接起来。
+
+引用地图通常包含：
+
+- 原文位置
+- 原始论断
+- 需要的证据类型
+- 检索概念
+- 候选文献
+- 最终选择的引用
+- 验证来源
+- 选择理由
+- 是否存在证据不足或来源不完全匹配的问题
+
+这样做的好处是：以后修改论文时，可以清楚知道每个引用为什么放在这里。
+
+### 4. 多平台分工检索
+
+Skill 不会把所有问题都交给同一个网站。不同平台有不同优势，因此它会根据论断类型分工检索。
+
+例如：
+
+- 需要快速找到相关论文时，用 Consensus、Elicit 或 Semantic Scholar。
+- 需要系统比较样本、方法、结果时，用 Elicit、Scopus 或 Web of Science。
+- 需要追踪引用关系时，用 Semantic Scholar、Google Scholar 或 Scite。
+- 需要验证 DOI 和期刊信息时，用 Crossref、出版商页面或 DOI 记录。
+- 需要中文文献、地区背景或本土研究时，用 CNKI、Wanfang、VIP。
+- 需要特定学科数据库时，根据领域使用 PubMed、ERIC、IEEE Xplore、ACM Digital Library、PsycINFO、JSTOR、SSRN、HeinOnline 等。
+
+### 5. 筛选候选文献
+
+候选文献会按照“是否真正支持原文论断”来排序，而不是只看标题相似度。
+
+优先级通常是：
+
+1. 直接匹配：概念、对象、方法、情境或结果高度一致。
+2. 强相邻匹配：核心概念一致，但对象或情境略有差异。
+3. 理论或综述支持：适合支撑理论、定义、机制或领域共识。
+4. 背景支持：适合放在文献综述或背景段落，但不足以支持具体效果论断。
+
+会被拒绝的来源包括：
+
+- 只是在标题中出现相同关键词，但摘要和方法不支持原文论断。
+- 来源无法验证。
+- 期刊或出版渠道可疑。
+- 研究结论与原文论断相反。
+- 需要过度解释才能支持原文句子。
+
+### 6. 验证来源和元数据
+
+插入引用前，Skill 会检查：
+
+- 文献是否真实存在。
+- 作者、年份、题名、期刊、卷期、页码是否可靠。
+- DOI 或出版商链接是否可验证。
+- 摘要、方法或全文是否支持对应论断。
+- 文献证据强度是否匹配句子的表达强度。
+
+真实存在的文献不一定就是合格引用。只有当它能支持附近句子的具体论断时，才应该被引用。
+
+### 7. 插入 APA 文内引用
+
+Skill 会尽量保持作者原有的写作风格、段落顺序和论证逻辑。引用插入原则包括：
+
+- 普通论断优先使用一到两个高匹配来源。
+- 避免无意义的长串引用。
+- 作者作为句子主语时使用叙述式引用。
+- 作为证据支撑时使用括号式引用。
+- 如果插入引用导致句子过长，只做最小必要修改。
+- 对来源不确定的地方标记为“需要更强来源”，不强行插入弱引用。
+
+### 8. 最终审核
+
+插入引用后，Skill 会进行一次引用审计：
+
+- 每个文内引用是否都有参考文献条目。
+- 每个参考文献条目是否都在正文中被引用。
+- APA 格式是否一致。
+- DOI 链接是否完整。
+- 高价值论断是否有足够证据。
+- 是否存在引用不能支撑句子的情况。
+
+最终应输出修订文本、APA 参考文献、来源追踪和未解决问题。
+
+## 多平台分工检索策略
+
+![多平台检索与验证](assets/source-routing-verification.png)
+
+| 任务需求 | 推荐平台 | 主要作用 |
 |---|---|---|
-| Fast peer-reviewed discovery | Consensus, Elicit, Semantic Scholar | Find likely relevant scholarly papers from claim-based queries |
-| Systematic extraction | Elicit, Scopus, Web of Science | Compare samples, methods, findings, outcomes, and study types |
-| Citation graph and related work | Semantic Scholar, Google Scholar, Scite | Find influential papers, later studies, supporting or contrasting citations |
-| Metadata verification | Crossref, publisher pages, DOI records | Verify title, authors, journal, volume, issue, pages, DOI, and year |
-| Field-specific literature | PubMed, ERIC, IEEE Xplore, ACM Digital Library, PsycINFO, JSTOR, Business Source, SSRN, HeinOnline | Match the manuscript's academic discipline |
-| Chinese-language scholarship | CNKI, Wanfang, VIP | Find Chinese-language studies, local context, and China-specific literature |
+| 快速发现同行评审论文 | Consensus、Elicit、Semantic Scholar | 用论断式查询快速找到可能相关的论文 |
+| 系统性提取研究信息 | Elicit、Scopus、Web of Science | 比较样本、方法、结果、研究类型和结论 |
+| 查找引用关系和相关研究 | Semantic Scholar、Google Scholar、Scite | 找高影响文献、后续研究、支持或反驳关系 |
+| 验证 DOI 和出版信息 | Crossref、DOI 记录、出版商页面 | 核实作者、年份、期刊、卷期、页码和 DOI |
+| 学科数据库检索 | PubMed、ERIC、IEEE Xplore、ACM Digital Library、PsycINFO、JSTOR、SSRN、HeinOnline | 根据学科获得更精准的文献 |
+| 中文文献和本土研究 | CNKI、Wanfang、VIP | 查找中文研究、地区背景、政策语境和本土实证研究 |
 
-The general rule is: use discovery tools to find candidates, then use authoritative indexes or publisher pages to verify final references.
+基本原则是：发现工具负责找候选文献，权威索引和出版商页面负责验证最终来源。
 
-### 5. Screen Candidate Sources
+## 核心优势
 
-Candidate sources are ranked by fit:
+### 1. 从原文论断出发
 
-1. Direct fit: same construct plus very similar population, context, method, or outcome.
-2. Strong adjacent fit: same construct and outcome, but a nearby population or context.
-3. Theory or review support: useful for mechanisms, definitions, or field-level consensus.
-4. Background only: useful for general context, but not enough for a specific empirical claim.
+Skill 从原文的具体句子和段落出发，而不是只根据宽泛主题检索。这样可以减少“看起来相关但实际支撑不足”的文献。
 
-Sources are rejected when they only match keywords, cannot be verified, appear in questionable venues, contradict the claim, or would require overstating the evidence.
+### 2. 多平台分工，而不是单一搜索
 
-### 6. Verify Sources Before Insertion
+没有任何一个文献平台是完整的。这个 Skill 把文献发现、引用追踪、元数据验证、学科数据库检索和中文文献检索分开处理，提高覆盖率和可靠性。
 
-Before a citation is inserted, the skill checks:
+### 3. 强调引用与论断匹配
 
-- whether the source exists
-- whether title, author, year, journal, and DOI metadata are reliable
-- whether the abstract or full text supports the claim
-- whether the evidence strength matches the sentence wording
-- whether the source is being used for the correct purpose
+它关注的是“这篇文献能否支持这个句子”，而不是“这篇文献是否和主题有关”。这可以减少弱引用、装饰性引用和过度引用。
 
-This matters because a real reference can still be a bad citation if it supports only a nearby topic rather than the exact claim.
+### 4. 默认 APA 7 格式
 
-### 7. Insert Citations Conservatively
+Skill 默认使用 APA 7，包括文内引用、参考文献列表、DOI 格式和引用-参考文献一致性检查。
 
-The skill inserts APA-style citations without changing the author's argument or voice. It prefers:
+### 5. 可追溯
 
-- one or two high-fit sources over long citation piles
-- narrative citations when the author is part of the sentence
-- parenthetical citations when the source supports a claim
-- minimal sentence changes only when needed for readability
+它可以输出来源追踪表，记录每篇文献通过什么平台、什么查询、什么验证方式被选中。
 
-If the source fit is uncertain, the skill should flag the claim instead of forcing a weak citation.
+### 6. 保留作者原文风格
 
-### 8. Audit the Final Draft
+它不是重写工具，而是引用增强工具。原则上保留作者的论点、段落顺序、术语和表达风格。
 
-After insertion, the skill checks:
+### 7. 不编造文献
 
-- every in-text citation has a reference entry
-- every reference entry is cited in the manuscript
-- APA formatting is consistent
-- DOI links are included where available
-- high-value claims have adequate support
-- no source is being used beyond what it can support
+如果找不到可靠来源，应标记为需要来源，而不是生成一个不存在或无法验证的引用。
 
-The final output should include both the revised text and a short source trace.
+## 输出结果
 
-## Key Advantages
+用于论文或文章草稿时，可以输出：
 
-### Claim-Level Search
+- 插入引用后的修订文本或 DOCX。
+- APA 参考文献列表。
+- 引用地图。
+- 来源追踪表。
+- 引用审计摘要。
+- 仍缺少强证据的论断列表。
 
-The skill searches from the actual manuscript sentence, not from broad topic labels. This makes the retrieved literature more relevant to the paper's argument.
+只用于文献检索时，可以输出：
 
-### Multi-Platform Coverage
+- 按用途分组的推荐文献。
+- 每篇文献与原文的相关性说明。
+- DOI 或验证链接。
+- 建议采用、拒绝或保留为背景文献的判断。
 
-No single literature platform is complete. The skill separates discovery, citation chasing, source verification, field-specific search, and Chinese-language search so that each platform is used for what it does best.
+## 适用场景
 
-### Stronger Citation Integrity
+- 给论文文献综述补充更相关的文献。
+- 检查段落中哪些论断缺少引用。
+- 给 DOCX 草稿插入 APA 引用。
+- 在修改论文前建立引用地图。
+- 检查文内引用和参考文献列表是否一致。
+- 替换弱引用或过于宽泛的引用。
+- 同时检索英文文献和中文文献。
+- 为研究计划、文章草稿或章节草稿生成引用支撑。
 
-The skill checks whether a source supports the exact claim near the citation. This reduces weak citation placement, source padding, and accidental overclaiming.
+## 安装方法
 
-### APA-Focused Output
+把 skill 文件夹复制到 Codex 的 skills 目录：
 
-The default style is APA 7. The skill supports in-text citation insertion, reference list generation, DOI formatting, and citation-reference consistency checks.
+```bash
+mkdir -p ~/.codex/skills
+cp -R literature-citation-aggregator ~/.codex/skills/
+```
 
-### Traceable Decisions
+安装后，如有需要，重启 Codex 或刷新 skills 列表。
 
-The citation map and source trace show where each source came from, which query found it, how it was verified, and why it was selected.
+## 使用方法
 
-### Original Writing Preservation
+示例提示词：
 
-The skill is designed to strengthen the manuscript without rewriting the author's argument, paragraph order, terminology, or academic voice.
+```text
+使用 literature-citation-aggregator 检查这篇学术稿件中哪些论断缺少文献支撑，帮我寻找相关文献，插入 APA 引用，并生成 APA 参考文献列表和来源追踪。
+```
 
-### Safer Handling of Uncertain Evidence
+更多示例：
 
-If a reliable source cannot be found, the skill should mark the claim as needing support instead of inventing a reference or inserting a loosely related paper.
+```text
+使用 literature-citation-aggregator 检查下面这段文字，指出哪些句子需要引用，并为每个论断推荐 APA 文献。
+```
 
-## Expected Deliverables
+```text
+使用 literature-citation-aggregator 给这篇文献综述补充 APA 引用，但不要改变原文结构和论证顺序。
+```
 
-When used on a manuscript, the skill can produce:
+```text
+使用 literature-citation-aggregator 检查现有引用是否真的支持它们所在的句子，并标记弱引用。
+```
 
-- a revised manuscript or marked-up text with inserted citations
-- an APA reference list containing only cited sources
-- a citation map showing claim-to-source alignment
-- a source trace with discovery and verification details
-- a citation audit summary
-- a list of unresolved claims that still need stronger sources
+可以用于：
 
-When used only for research, it can produce:
+- DOCX 草稿
+- PDF 草稿
+- 纯文本稿件
+- 文献综述章节
+- 文章草稿
+- 研究计划
+- 需要引用支撑的单独段落
 
-- recommended references grouped by purpose
-- one-sentence relevance notes
-- DOI or verification links
-- candidate sources to keep, reject, or reserve for background
-
-## Example Use Cases
-
-- Strengthen a literature review with more relevant sources.
-- Check whether a paragraph contains unsupported academic claims.
-- Add APA citations to a DOCX article draft.
-- Build a citation map before revising a manuscript.
-- Verify that all in-text citations appear in the reference list.
-- Replace weak or generic citations with better-matched sources.
-- Search both English-language and Chinese-language literature for the same research problem.
-
-## Repository Structure
+## 仓库结构
 
 ```text
 academic-writing-citation-support/
 ├── README.md
 ├── LICENSE
 ├── .gitignore
+├── assets/
+│   ├── academic-citation-hero.png
+│   ├── citation-workflow.png
+│   └── source-routing-verification.png
 └── literature-citation-aggregator/
     ├── SKILL.md
     ├── agents/
@@ -196,58 +299,29 @@ academic-writing-citation-support/
     └── scripts/
 ```
 
-## Installation
+## 引用完整性原则
 
-Copy the skill folder into your Codex skills directory:
+这个 Skill 遵循以下原则：
 
-```bash
-mkdir -p ~/.codex/skills
-cp -R literature-citation-aggregator ~/.codex/skills/
-```
+- 不编造文献。
+- 不使用无法验证的来源。
+- 不把只相关于大主题的文献强行插到具体论断后面。
+- 不为了增加引用数量而堆叠引用。
+- 优先选择最能支持具体句子的文献。
+- 对证据不足的地方明确标记。
+- 保留作者原有论证结构。
 
-After installation, restart Codex or refresh the skills list if needed.
+## 隐私与限制
 
-## Usage
+这个 Skill 可以指导检索、验证、插入引用和 APA 格式整理，但不能替代作者、导师或审稿人的最终学术判断。
 
-Example prompt:
+部分文献可能需要学校图书馆、机构数据库或付费全文权限。对于重要论文、毕业论文、投稿论文或高风险学术提交，最终稿仍应由作者或导师复核。
 
-```text
-Use literature-citation-aggregator to check this academic manuscript for unsupported claims, find relevant scholarly literature, insert APA citations, and generate an APA reference list with source traces.
-```
+处理私密稿件时，不应未经明确同意把完整论文上传到第三方网站。更稳妥的做法是使用短查询、关键词组合或必要的最小文本片段进行检索。
 
-More example prompts:
+## 配图说明
 
-```text
-Use literature-citation-aggregator to identify which claims in this paragraph need citations and recommend APA references for each claim.
-```
-
-```text
-Use literature-citation-aggregator to add APA citations to this literature review without changing the author's structure or argument.
-```
-
-```text
-Use literature-citation-aggregator to verify whether the existing citations in this draft actually support the claims they are attached to.
-```
-
-You can use it with:
-
-- DOCX drafts
-- PDF drafts
-- plain text manuscripts
-- literature review sections
-- article drafts
-- research proposals
-- individual paragraphs that need citation support
-
-## Citation Integrity Principles
-
-This skill is designed to avoid decorative or weak citations. A source should be included only when it supports the exact claim near the citation. If a reliable source cannot be found, the claim should be marked as needing support instead of forcing a citation.
-
-## Scope and Limits
-
-This skill can guide search, verification, insertion, and APA formatting, but it does not replace the author's academic judgment. Some sources may require library access, institutional database access, or manual full-text review. For high-stakes academic submission, the final manuscript should still be reviewed by the author or supervisor.
-
-The skill should not upload a private full manuscript to third-party websites unless the user explicitly approves that destination and content. When possible, it should search with short claim-based queries or minimal excerpts.
+README 中的三张配图使用 image-2 生成，仅用于说明工作流程和检索逻辑，不包含任何个人论文内容或特定研究主题。
 
 ## License
 
