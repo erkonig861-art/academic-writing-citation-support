@@ -17,6 +17,25 @@ Use this guide when deciding where to search and how to verify literature.
 - Discipline-specific databases: use field databases appropriate to the paper's discipline, such as PubMed for medicine, ERIC for education, IEEE Xplore/ACM Digital Library for computing and engineering, PsycINFO for psychology, Business Source/ABI-INFORM for business, JSTOR/Project MUSE for humanities and social sciences, SSRN/HeinOnline for law and policy, or other institutional library databases when accessible.
 - Web of Science / Scopus: use when the task needs a reproducible database-style search, citation chasing, or journal-quality screening.
 
+## Platform Access and User Inputs
+
+The skill selects platforms and builds queries, but it must not imply that Codex can bypass logins, subscriptions, paywalls, CAPTCHAs, institutional access, or download limits. Use the least sensitive input needed for each search. Do not upload a private manuscript to a third-party platform unless the user explicitly authorizes that destination.
+
+| Platform group | How to use it | What the user may need to provide |
+|---|---|---|
+| Consensus / Elicit | Run short claim-based queries to discover candidate studies, summaries, and extraction tables. | Logged-in browser session for paid or personalized features; exported table, screenshot, titles, DOI list, or copied results if direct access is unavailable. |
+| Semantic Scholar / OpenAlex / Crossref | Search metadata, DOI records, authors, years, publication venue, and citation relationships. | Usually no account; provide more precise title, author, DOI, or year when metadata is ambiguous. |
+| Google Scholar | Use as a backup discovery and citation-chasing source. | User may need to handle CAPTCHA, login, or region restrictions manually; verify final metadata elsewhere. |
+| Scite | Check whether later papers support, contrast, or mention a candidate source. | User account or subscription when required; copied Scite results or exported notes if Codex cannot access the page. |
+| Scopus / Web of Science | Use for database-style searches, citation chasing, reproducible screening, and journal-quality checks. | Institutional login, library access, VPN, or exported RIS/BibTeX/CSV/search results. |
+| CNKI / Wanfang / VIP | Search Chinese-language scholarship, local context, policy background, and China-specific studies. | Logged-in browser session, institutional access, exported citation records, abstracts, PDFs, or screenshots. |
+| PubMed / ERIC | Search public biomedical, health, education, and learning-science records. | Usually no account for metadata; user-provided full text or institutional access if needed. |
+| IEEE Xplore / ACM Digital Library | Search computing, engineering, systems, algorithm, HCI, and technical evaluation papers. | Institutional login or user-provided DOI, PDF, BibTeX/RIS, or exported citation data for full text. |
+| PsycINFO / Education Source / JSTOR / HeinOnline / Business Source | Search psychology, education, humanities, law, policy, and business databases. | Institutional subscription, library login, VPN, or exported records and PDFs. |
+| Publisher pages / DOI resolver | Verify final title, authors, year, venue, volume, issue, pages, DOI, and publication status. | Usually no account for metadata; user-provided PDF or institutional access for paywalled full text. |
+
+Default routing pattern: use one discovery source to find candidates and one verification source to confirm identity and metadata. For central claims, add a citation-context check through abstracts, methods, full text, or a user-provided PDF.
+
 ## Query Construction
 
 Build queries from the source paragraph:

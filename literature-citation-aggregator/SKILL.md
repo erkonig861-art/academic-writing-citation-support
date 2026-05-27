@@ -38,6 +38,7 @@ Default citation style is APA 7 unless the user specifies another style.
    - Use multiple platforms for important claims: one discovery tool plus one verification/index source.
    - Select platforms according to the claim type, discipline, and language of the manuscript. Start with a discovery tool, then verify with Crossref, publisher pages, or other authoritative indexes.
    - For discipline-specific claims, include field databases where available; do not rely only on general AI search.
+   - Respect platform access limits. If a platform requires login, subscription, institutional access, CAPTCHA, or download permission, ask the user to provide an authenticated browser session, exported records, DOI/title lists, BibTeX/RIS files, screenshots, PDFs, or copied results instead of assuming direct access.
 
 4. Select sources by relevance and strength.
    - Match the source to the exact claim: same construct, population or education level where possible, comparable method, and compatible outcome.
