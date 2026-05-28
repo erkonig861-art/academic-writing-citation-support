@@ -21,6 +21,7 @@ Academic Writing Citation Support 是一个面向 Codex 的学术写作引用支
 - [视频介绍](#视频介绍)
 - [这个 Skill 解决什么问题](#这个-skill-解决什么问题)
 - [核心能力](#核心能力)
+- [证据治理工作流升级](#证据治理工作流升级)
 - [详细工作流程](#详细工作流程)
 - [多平台分工检索策略](#多平台分工检索策略)
 - [核心优势](#核心优势)
@@ -31,6 +32,7 @@ Academic Writing Citation Support 是一个面向 Codex 的学术写作引用支
 - [仓库结构](#仓库结构)
 - [引用完整性原则](#引用完整性原则)
 - [隐私与限制](#隐私与限制)
+- [升级说明](#升级说明)
 
 ## 这个 Skill 解决什么问题
 
@@ -48,19 +50,64 @@ Academic Writing Citation Support 是一个面向 Codex 的学术写作引用支
 ## 核心能力
 
 - 从原文中识别需要文献支撑的论断。
+- 在检索前判断任务类型：缺口扫描、证据架构、来源发现、引用插入、引用审计或项目级文献记忆。
+- 为每个论断先判断所需证据类型，而不是直接搜索关键词。
 - 基于原文的概念、方法、研究对象、情境、结果和理论来构造检索词。
+- 区分理论文献、实证研究、方法文献、官方/档案资料、批注本/校注本、一手材料和项目本地材料。
 - 根据任务类型选择合适平台，例如 Consensus、Elicit、Semantic Scholar、Crossref、Google Scholar、Scite、CNKI、Wanfang、PubMed、ERIC、IEEE Xplore、ACM Digital Library、PsycINFO、JSTOR 等。
 - 在插入引用前验证文献来源和元数据。
-- 使用 APA 7 风格插入文内引用。
-- 生成 APA 参考文献列表。
+- 默认使用 APA 7；如果用户指定或中文人文学术语境需要，可改用 GB/T 7714、Chicago 或其他格式。
+- 生成参考文献列表。
 - 输出“论断-来源”对应关系，方便复查。
 - 对弱相关、无法验证或不匹配的来源进行标记，而不是编造引用。
+- 明确标记“暂不应插入引用”的判断，例如需要曲谱、访谈、档案、节目单、田野材料或权威版本核验的内容。
+- 为长期项目沉淀可复用的 source library 和 rejected-source log。
+
+## 证据治理工作流升级
+
+这个 Skill 已从单线性的“补引用”流程升级为证据治理流程。新的宏观逻辑是：
+
+```text
+任务分流 → 证据架构 → 来源路由 → 证据门槛 → 插入或缺口报告 → 项目级文献记忆
+```
+
+升级后的核心判断是：**一个论断需要什么证据才算成立**。
+因此，Skill 不会默认把每个缺口都变成论文引用，而是先判断它需要理论文献、实证研究、方法文献、官方记录、权威校注、一手材料，还是项目本地材料。
+
+这尤其适合：
+
+- 博士论文和多章节项目。
+- 中文人文学术写作。
+- 地方史、戏曲、音乐、非遗、田野、档案类研究。
+- 同时使用论文、专著、志书、访谈、曲谱、剧本、节目单和报刊资料的项目。
+- 需要先做“引用缺口表 / 文献映射表”，再决定是否插入正文的工作。
+
+详细规则见：
+
+- `literature-citation-aggregator/references/evidence-governance-workflow.md`
+- `literature-citation-aggregator/references/citation-map-template.md`
+- `literature-citation-aggregator/references/source-routing.md`
+- `literature-citation-aggregator/references/integrity-gates.md`
 
 ## 详细工作流程
 
 ![学术引用工作流程](assets/citation-workflow.png)
 
-### 1. 阅读原文
+### 0. 任务分流
+
+Skill 先判断用户真正需要的是哪种工作：
+
+- 扫描引用缺口。
+- 建立证据架构。
+- 推荐和核验文献。
+- 检查已有引用是否支撑原句。
+- 插入引用并生成参考文献。
+- 统一参考文献格式。
+- 为长期项目建立文献记忆。
+
+如果任务高风险或文档较长，优先输出引用地图或证据计划，不直接改正文。
+
+### 1. 阅读原文与建立证据架构
 
 Skill 首先读取用户提供的论文草稿、章节、段落、DOCX、PDF 或纯文本。它不会只根据一个宽泛主题来搜索文献，而是从原文句子和段落中提取真实的学术论断。
 
@@ -73,6 +120,9 @@ Skill 首先读取用户提供的论文草稿、章节、段落、DOCX、PDF 或
 - 方法、干预或工具
 - 结果、影响或评价指标
 - 需要背景支撑的语境性信息
+- 需要一手材料支撑的项目性判断
+
+在检索前，Skill 会先判断每个论断需要哪类证据：理论文献、实证研究、方法文献、官方/档案资料、权威版本、文本批注、一手材料、项目本地材料等。
 
 ### 2. 识别需要引用的论断
 
@@ -324,6 +374,7 @@ cp -R literature-citation-aggregator ~/.codex/skills/
 ```text
 academic-writing-citation-support/
 ├── README.md
+├── UPGRADE.md
 ├── LICENSE
 ├── .gitignore
 ├── assets/
@@ -349,6 +400,8 @@ academic-writing-citation-support/
 - 优先选择最能支持具体句子的文献。
 - 对证据不足的地方明确标记。
 - 保留作者原有论证结构。
+- 把“不能插引用，因为需要一手材料”视为有效的学术判断。
+- 对长期项目保留可复用来源库和被拒文献记录。
 
 ## 隐私与限制
 
@@ -357,6 +410,17 @@ academic-writing-citation-support/
 部分文献可能需要学校图书馆、机构数据库或付费全文权限。对于重要论文、毕业论文、投稿论文或高风险学术提交，最终稿仍应由作者或导师复核。
 
 处理私密稿件时，不应未经明确同意把完整论文上传到第三方网站。更稳妥的做法是使用短查询、关键词组合或必要的最小文本片段进行检索。
+
+## 升级说明
+
+本仓库新增 `UPGRADE.md`，记录从 citation insertion 到 evidence governance 的升级逻辑、压力场景和后续建议。核心升级包括：
+
+- 增加任务分流。
+- 增加证据架构阶段。
+- 增加本地项目材料优先规则。
+- 增加证据类型错配门槛。
+- 增加 `needs primary evidence`、`background only`、`rejected source` 等决策状态。
+- 增加项目级 source library 和 rejected-source log。
 
 ## 配图说明
 

@@ -2,6 +2,15 @@
 
 Use these gates before and after inserting citations into a manuscript.
 
+## Gate 0: Task and Evidence-Class Fit
+
+Before searching or inserting, confirm:
+- The user request mode is clear: gap scan, evidence architecture, source discovery, source-fit audit, citation insertion, reference formatting, or project evidence memory.
+- The claim has an evidence class: theory/definition, prior findings, method/instrument, factual/contextual, humanities/interpretive, case-material, or project-specific.
+- The proposed source type can legitimately support that evidence class.
+
+If the evidence class is wrong or unclear, do not search blindly. Build an evidence map or ask for the missing source material.
+
 ## Gate 1: Reference Identity
 
 Every final source must have enough verified identity data:
@@ -18,6 +27,7 @@ Preferred verification order:
 2. Crossref / PubMed / ERIC / Semantic Scholar / OpenAlex
 3. Library database record
 4. CNKI / Wanfang / VIP for Chinese sources
+5. Official record / archive identifier / local corpus metadata for factual or case-material claims
 
 Do not cite a paper only because an AI search engine summarized it. AI search discovery is not verification.
 
@@ -30,6 +40,7 @@ For every inserted citation, classify fit:
 | Direct | Source directly supports the same claim, construct, and context | Cite normally |
 | Strong adjacent | Same construct and outcome, adjacent population/context | Cite with conservative wording |
 | Theory/review | Supports mechanism or broad field background | Use for conceptual claims only |
+| Primary/case evidence | Supports a specific local, archival, textual, performance, score, interview, or document claim | Cite or footnote according to source type; do not generalize beyond the case |
 | Weak adjacent | Shares terms but not claim substance | Reject or mark as gap |
 | Contradictory | Source conflicts with the claim | Do not cite as support; use as counterpoint if relevant |
 
@@ -39,6 +50,11 @@ Check four alignment dimensions:
 - Evidence type: Does the method support the claim strength?
 - Certainty: Does the manuscript overstate what the source found?
 
+Also check evidence-type mismatch:
+- Literature cannot substitute for primary evidence when the claim is about a specific archive, score, interview, program, local event, or manuscript wording.
+- Primary evidence cannot substitute for literature when the claim is about field-wide theory, prior research consensus, or validated method.
+- Background sources cannot support causal, effect-size, or technical claims unless they directly present that evidence.
+
 ## Gate 3: Citation Context
 
 For each citation in the revised text:
@@ -46,6 +62,7 @@ For each citation in the revised text:
 - Causal language requires causal or experimental evidence; otherwise use cautious language such as `is associated with`, `may support`, or `has been reported to`.
 - Reviews support broad field claims; individual empirical studies support specific interventions/findings.
 - Instrument or rubric claims require validation/reliability sources where possible.
+- Critical editions support textual wording; interpretive claims need commentary or scholarship; local case details need page, file, transcript, score, or archive identifiers where available.
 
 ## Gate 4: Zero-Orphan Citation Audit
 
@@ -63,6 +80,7 @@ Ask three questions:
 - Methodology reviewer: Does the cited method justify the manuscript's conclusion?
 - Domain reviewer: Are seminal or field-specific sources missing?
 - Devil's advocate: Could this citation be seen as unrelated, weaker than claimed, or selectively used?
+- Evidence steward: Is this the right kind of source for the claim, or is the citation concealing a need for primary evidence?
 
 If any answer is yes, revise the wording, find a stronger source, or mark the citation gap.
 
@@ -72,3 +90,10 @@ Report one of:
 - PASS: no known citation identity, orphan, or claim-fit problems
 - PASS_WITH_NOTES: only minor format/access notes remain
 - FAIL: any fabricated, unverifiable, orphaned, or materially misaligned citation remains
+
+Include counts for:
+- claims cited
+- claims marked `needs primary evidence`
+- claims marked `needs user/library access`
+- rejected sources
+- unresolved gaps

@@ -2,6 +2,10 @@
 
 Use this checklist before finalizing citations and references.
 
+## Style Selection Gate
+
+APA 7 is the default only when the user does not specify another style. For Chinese-language humanities dissertations, project reports, and manuscripts aimed at Chinese journals, ask whether the user wants GB/T 7714, footnotes, or another local style before final insertion. Do not silently force APA if the manuscript context clearly suggests a different style.
+
 ## In-text Citations
 
 - One author: `(Smith, 2020)` or `Smith (2020)`.
